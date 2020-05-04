@@ -1,0 +1,7 @@
+AllCops:
+  Exclude:
+    - 'spec/spec_helper.rb'
+    - 'Guardfile'
+
+Metrics/BlockLength:
+  Max: 30
