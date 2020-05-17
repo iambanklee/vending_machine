@@ -28,7 +28,7 @@ class VendingMachine
   def purchase(item_name)
     select_item = select_item(item_name)
 
-    puts "You have select #{select_item.name}, price: #{formatting_price(select_item.price)}"
+    puts "You have selected #{select_item.name}, price: #{formatting_price(select_item.price)}"
     while outstanding_amount > 0
       puts "This machine accepts following coins: #{CHANGE_DENOMINATION_MAP.keys}"
       puts "You need #{formatting_price(outstanding_amount)} to proceed. "
