@@ -6,7 +6,7 @@ RSpec.describe VendingMachine do
   let(:items) do
     {
       "Green Tea": {
-        price: 79,
+        price: 70,
         stock: 10
       },
       "Milk Tea": {
@@ -39,50 +39,40 @@ RSpec.describe VendingMachine do
 
   xcontext 'The machine should keep track of the products and change that it contains'
 
-  describe '#select_item' do
-    subject { vending_machine.select_item(name) }
-
-    context 'when item exist and has stock' do
-      let(:name) { 'Green Tea'}
-
-      it 'returns the order price' do
-        is_expected.to eq(79)
-      end
-    end
-  end
-
-  describe '#insert_money' do
-    subject { vending_machine.insert_money(coin) }
-
-    let(:coin) { '50p' }
-
-    it 'return inserted money' do
-      is_expected.to eq(50)
-    end
-  end
-
-  describe '#outstanding_money' do
-    subject { vending_machine.outstanding_money }
-
-    context 'when appropriate amount of money is inserted' do
-      it 'returns zero' do
-        is_expected.to eq(0)
-      end
-    end
-  end
-
   describe '#purchase' do
     subject { vending_machine.purchase(item_name) }
 
     context 'given an item is selected' do
-      let(:item_name) { 'Green Tea' }
-
       context 'when the appropriate amount of money is inserted' do
-        it 'the vending machine should return the correct product' do
-          expect(Kernel).to receive(:gets).and_return('50p', '50p')
-          expect(vending_machine).to receive(:outstanding_money).and_return(79, 29, -21)
+        let(:item_name) { 'Green Tea' }
 
+        it 'return the correct product' do
+          expect(Kernel).to receive(:gets).and_return('50p', '20p')
+          expect(vending_machine).to receive(:outstanding_amount).and_return(70, 70, 20, 20, 0, 0)
+
+          expect{subject}.to output(/Please collect your Green Tea/).to_stdout
+          expect{subject}.not_to output(/Please remember to collect your change/).to_stdout
           is_expected.to eq('Green Tea')
+        end
+      end
+
+      context 'when too much money is provided' do
+        let(:item_name) { 'Black Tea' }
+
+        it 'return the correct product' do
+          expect(Kernel).to receive(:gets).and_return('50p', '20p')
+          expect(vending_machine).to receive(:outstanding_amount).and_return(59, 59, 9, 9, -11, -11, -11)
+
+          expect{subject}.to output(/Please collect your Black Tea/).to_stdout
+          is_expected.to eq('Black Tea')
+        end
+
+        it 'return the correct change' do
+          expect(Kernel).to receive(:gets).and_return('50p', '20p')
+          expect(vending_machine).to receive(:outstanding_amount).and_return(59, 59, 9, 9, -11, -11, -11)
+
+          expect{subject}.to output(/Please remember to collect your change: \[\"10p\", \"1p\"\]/).to_stdout
+          is_expected.to eq('Black Tea')
         end
       end
     end

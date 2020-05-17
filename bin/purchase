@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/vending_machine'
+
+items = {
+  "Green Tea": {
+    price: 70,
+    stock: 10
+  },
+  "Milk Tea": {
+    price: 99,
+    stock: 10
+  },
+  "Black Tea": {
+    price: 59,
+    stock: 10
+  },
+}.to_json
+
+changes =  {
+  '1p': 10,
+  '2p': 10,
+  '5p': 10,
+  '10p': 10,
+  '20p': 10,
+  '50p': 10,
+  '£1': 10,
+  '£2': 10,
+}.to_json
+
+vending_machine = VendingMachine.new(items, changes)
+
+puts "Welcome!"
+
+begin
+  puts "This machine provides following product: #{vending_machine.products.keys}"
+  puts 'Please select item from provided list'
+  selected_item = Kernel.gets.chomp
+end until vending_machine.products[selected_item]
+
+vending_machine.purchase(selected_item)
+

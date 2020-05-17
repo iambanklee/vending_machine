@@ -1,5 +1,7 @@
-require 'product'
-require 'inventory'
+require 'json'
+
+require_relative 'product'
+require_relative 'inventory'
 
 class VendingMachine
   attr_reader :products, :inventory
@@ -24,14 +26,28 @@ class VendingMachine
   end
 
   def purchase(item_name)
-    select_item(item_name)
+    select_item = select_item(item_name)
 
-    while outstanding_money > 0
+    puts "You have select #{select_item.name}, price: #{formatting_price(select_item.price)}"
+    while outstanding_amount > 0
+      puts "This machine accepts following coins: #{CHANGE_DENOMINATION_MAP.keys}"
+      puts "You need #{formatting_price(outstanding_amount)} to proceed. "
       coin = Kernel.gets.chomp
-      insert_money(coin)
+      if CHANGE_DENOMINATION_MAP[coin]
+        puts "You have inserted #{coin}"
+        insert_money(coin)
+      else
+        puts "This machine doesn't accept #{coin}"
+      end
     end
 
-    item_name
+    puts "Please collect your #{select_item.name}"
+
+    if outstanding_amount < 0
+      puts "Please remember to collect your change: #{return_changes(-outstanding_amount)}"
+    end
+
+    select_item.name
   end
 
   def return_changes(amount)
@@ -49,20 +65,21 @@ class VendingMachine
     result
   end
 
+  private
+
   def select_item(name)
     product = products[name]
     @selected_item_amount += product.price
+    product
   end
 
   def insert_money(coin)
     @inserted_amount += CHANGE_DENOMINATION_MAP[coin]
   end
 
-  def outstanding_money
+  def outstanding_amount
     @selected_item_amount - @inserted_amount
   end
-
-  private
 
   def initialize_product(items)
     @products = {}
@@ -80,5 +97,9 @@ class VendingMachine
     end
 
     @inventory.reload_stock(change)
+  end
+
+  def formatting_price(price)
+    "£%.2f" % (price/100.0)
   end
 end
