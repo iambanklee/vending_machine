@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/iambanklee/vending_machine.svg?branch=master)](https://travis-ci.org/iambanklee/vending_machine)
+
 # Vending Machine
 This is the implementation for the Vending Machine challenge
 
