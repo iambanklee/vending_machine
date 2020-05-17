@@ -42,18 +42,23 @@ class VendingMachine
     end
 
     puts "Please collect your #{select_item.name}"
-
-    if outstanding_amount < 0
-      puts "Please remember to collect your change: #{return_changes(-outstanding_amount)}"
-    end
-
     deduct_item_inventory(select_item)
     puts "#{select_item.name} now has #{item_inventory.stock_of(select_item.name)} in stock"
+
+    return_change
 
     select_item.name
   end
 
-  def return_changes(amount)
+  def return_change
+    if outstanding_amount < 0
+      change_detail = amount_to_change(-outstanding_amount)
+      deduct_change_inventory(change_detail)
+      puts "Please remember to collect your change: #{change_detail}"
+    end
+  end
+
+  def amount_to_change(amount)
     result = []
 
     CHANGE_DENOMINATION_MAP.each do |denomination, pence|
@@ -72,6 +77,12 @@ class VendingMachine
 
   def deduct_item_inventory(item)
     item_inventory.items[item.name] -= 1
+  end
+
+  def deduct_change_inventory(change_detail)
+    change_detail.each do |coin|
+      change_inventory.items[coin] -= 1
+    end
   end
 
   def select_item(name)

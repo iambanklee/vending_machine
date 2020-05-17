@@ -59,9 +59,5 @@ RSpec.describe Inventory do
         is_expected.to eq(expected_result)
       end
     end
-
-
-
   end
-
 end

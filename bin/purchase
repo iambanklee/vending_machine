@@ -44,3 +44,8 @@ puts '== current item inventory =='
 vending_machine.item_inventory.items.each do |name, stock|
   puts "#{name} has #{stock} in stock"
 end
+
+puts '== current change inventory =='
+vending_machine.change_inventory.items.each do |name, stock|
+  puts "#{name} has #{stock} in stock"
+end

@@ -79,22 +79,22 @@ RSpec.describe VendingMachine do
     end
   end
 
-  describe '#return_changes' do
-    subject { vending_machine.return_changes(amount) }
+  describe '#amount_to_change' do
+    subject { vending_machine.amount_to_change(amount) }
 
     context '79p' do
       let(:amount) { 79 }
-      it { is_expected.to eq(%w(50p 20p 5p 2p 2p)) }
+      it { is_expected.to eq(%w[50p 20p 5p 2p 2p]) }
     end
 
     context '21p' do
       let(:amount) { 21 }
-      it { is_expected.to eq(%w(20p 1p)) }
+      it { is_expected.to eq(%w[20p 1p]) }
     end
 
     context '128p' do
       let(:amount) { 128 }
-      it { is_expected.to eq(%w(£1 20p 5p 2p 1p)) }
+      it { is_expected.to eq(%w[£1 20p 5p 2p 1p]) }
     end
   end
 end
