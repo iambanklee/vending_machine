@@ -70,7 +70,7 @@ vending_machine.change_inventory.reload_stock(change_to_reload)
 ```
 
 ## Tests
-RSpec with around 99% test coverage.
+RSpec with 100% test coverage
 
 ## Implemation approaches
 I used a mix of DDD/BDD/TDD approaches as the requirements seems clear but include no expecting input and output examples nor format.

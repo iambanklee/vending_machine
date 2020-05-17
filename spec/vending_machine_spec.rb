@@ -42,16 +42,14 @@ RSpec.describe VendingMachine do
 
         it 'return the correct product' do
           expect(Kernel).to receive(:gets).and_return('50p', '20p')
-          expect(vending_machine).to receive(:outstanding_amount).and_return(70, 70, 20, 20, 0, 0)
-
           expect{subject}.to output(/Please collect your Green Tea/).to_stdout
           expect{subject}.not_to output(/Please remember to collect your change/).to_stdout
+
           is_expected.to eq('Green Tea')
         end
 
         it 'deduct the item stock' do
           expect(Kernel).to receive(:gets).and_return('50p', '20p')
-          expect(vending_machine).to receive(:outstanding_amount).and_return(70, 70, 20, 20, 0, 0)
 
           expect{subject}.to change { vending_machine.item_inventory.stock_of(item_name) }.from(10).to(9).and output(/Green Tea now has 9 in stock/).to_stdout
         end
@@ -62,26 +60,23 @@ RSpec.describe VendingMachine do
 
         it 'return the correct product' do
           expect(Kernel).to receive(:gets).and_return('50p', '20p')
-          expect(vending_machine).to receive(:outstanding_amount).and_return(59, 59, 9, 9, -11, -11, -11)
-
           expect{subject}.to output(/Please collect your Black Tea/).to_stdout
+
           is_expected.to eq('Black Tea')
         end
 
         it 'return the correct change' do
           expect(Kernel).to receive(:gets).and_return('50p', '20p')
-          expect(vending_machine).to receive(:outstanding_amount).and_return(59, 59, 9, 9, -11, -11, -11)
-
           expect{subject}.to output(/Please remember to collect your change: \[\"10p\", \"1p\"\]/).to_stdout
+
           is_expected.to eq('Black Tea')
         end
 
         context 'and incorrect coin inserted' do
           it 'reject that coin with error message' do
             expect(Kernel).to receive(:gets).and_return('50p', '30p', '20p')
-            expect(vending_machine).to receive(:outstanding_amount).and_return(59, 59, 9, 9, 9, 9, -11, -11, -11)
-
             expect{subject}.to output(/This machine doesn't accept 30p/).to_stdout
+
             is_expected.to eq('Black Tea')
           end
         end
