@@ -1,5 +1,8 @@
+require 'product'
+require 'inventory'
+
 class VendingMachine
-  attr_reader :item_inventory, :change_inventory, :inserted_money
+  attr_reader :products, :inventory, :inserted_amount
 
   CHANGE_DENOMINATION_MAP = {
       '£2' => 200,
@@ -12,11 +15,12 @@ class VendingMachine
       '1p' => 1,
   }
 
-  def initialize(item, change)
-    @item_inventory = JSON.parse(item)
-    @change_inventory = JSON.parse(change)
-    @inserted_money = 0
-    @order_price = 0
+  def initialize(items, change)
+    initialize_product(items)
+    initialize_inventory(items, change)
+
+    @inserted_amount = 0
+    @selected_product_amount = 0
   end
 
   def purchase(item_name)
@@ -46,15 +50,35 @@ class VendingMachine
   end
 
   def select_item(name)
-    product = item_inventory[name]
-    @order_price += product['price']
+    product = products[name]
+    @selected_product_amount += product.price
   end
 
   def insert_money(coin)
-    @inserted_money += CHANGE_DENOMINATION_MAP[coin]
+    @inserted_amount += CHANGE_DENOMINATION_MAP[coin]
   end
 
   def outstanding_money
-    @order_price - @inserted_money
+    @selected_product_amount - @inserted_amount
+  end
+
+  private
+
+  def initialize_product(items)
+    @products = {}
+
+    JSON.parse(items).each do |name, attributes|
+      @products[name] = Product.new(name, attributes['price'])
+    end
+  end
+
+  def initialize_inventory(items, change)
+    @inventory = Inventory.new
+
+    JSON.parse(items).each do |name, attributes|
+      @inventory.add(name: name, stock: attributes['stock'])
+    end
+
+    @inventory.reload_stock(change)
   end
 end
