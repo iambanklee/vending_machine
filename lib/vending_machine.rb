@@ -2,17 +2,17 @@ require 'product'
 require 'inventory'
 
 class VendingMachine
-  attr_reader :products, :inventory, :inserted_amount
+  attr_reader :products, :inventory
 
   CHANGE_DENOMINATION_MAP = {
-      '£2' => 200,
-      '£1' => 100,
-      '50p' => 50,
-      '20p' => 20,
-      '10p' => 10,
-      '5p' => 5,
-      '2p' => 2,
-      '1p' => 1,
+    '£2' => 200,
+    '£1' => 100,
+    '50p' => 50,
+    '20p' => 20,
+    '10p' => 10,
+    '5p' => 5,
+    '2p' => 2,
+    '1p' => 1,
   }
 
   def initialize(items, change)
@@ -20,7 +20,7 @@ class VendingMachine
     initialize_inventory(items, change)
 
     @inserted_amount = 0
-    @selected_product_amount = 0
+    @selected_item_amount = 0
   end
 
   def purchase(item_name)
@@ -51,7 +51,7 @@ class VendingMachine
 
   def select_item(name)
     product = products[name]
-    @selected_product_amount += product.price
+    @selected_item_amount += product.price
   end
 
   def insert_money(coin)
@@ -59,7 +59,7 @@ class VendingMachine
   end
 
   def outstanding_money
-    @selected_product_amount - @inserted_amount
+    @selected_item_amount - @inserted_amount
   end
 
   private
