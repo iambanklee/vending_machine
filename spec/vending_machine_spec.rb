@@ -75,6 +75,16 @@ RSpec.describe VendingMachine do
           expect{subject}.to output(/Please remember to collect your change: \[\"10p\", \"1p\"\]/).to_stdout
           is_expected.to eq('Black Tea')
         end
+
+        context 'and incorrect coin inserted' do
+          it 'reject that coin with error message' do
+            expect(Kernel).to receive(:gets).and_return('50p', '30p', '20p')
+            expect(vending_machine).to receive(:outstanding_amount).and_return(59, 59, 9, 9, 9, 9, -11, -11, -11)
+
+            expect{subject}.to output(/This machine doesn't accept 30p/).to_stdout
+            is_expected.to eq('Black Tea')
+          end
+        end
       end
     end
   end
