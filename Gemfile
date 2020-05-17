@@ -5,5 +5,9 @@ source 'https://rubygems.org'
 gem 'bundler'
 gem 'guard'
 gem 'guard-rspec'
-gem 'rspec'
-gem 'simplecov'
+
+group :test do
+  gem 'rake'
+  gem 'rspec'
+  gem 'simplecov'
+end
