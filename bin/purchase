@@ -40,3 +40,7 @@ end until vending_machine.products[selected_item]
 
 vending_machine.purchase(selected_item)
 
+puts '== current item inventory =='
+vending_machine.item_inventory.items.each do |name, stock|
+  puts "#{name} has #{stock} in stock"
+end

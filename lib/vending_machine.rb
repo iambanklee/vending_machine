@@ -4,7 +4,7 @@ require_relative 'product'
 require_relative 'inventory'
 
 class VendingMachine
-  attr_reader :products, :inventory
+  attr_reader :products, :item_inventory, :change_inventory
 
   CHANGE_DENOMINATION_MAP = {
     '£2' => 200,
@@ -47,6 +47,9 @@ class VendingMachine
       puts "Please remember to collect your change: #{return_changes(-outstanding_amount)}"
     end
 
+    deduct_item_inventory(select_item)
+    puts "#{select_item.name} now has #{item_inventory.stock_of(select_item.name)} in stock"
+
     select_item.name
   end
 
@@ -66,6 +69,10 @@ class VendingMachine
   end
 
   private
+
+  def deduct_item_inventory(item)
+    item_inventory.items[item.name] -= 1
+  end
 
   def select_item(name)
     product = products[name]
@@ -90,13 +97,14 @@ class VendingMachine
   end
 
   def initialize_inventory(items, change)
-    @inventory = Inventory.new
+    @item_inventory = Inventory.new
 
     JSON.parse(items).each do |name, attributes|
-      @inventory.add(name: name, stock: attributes['stock'])
+      @item_inventory.add(name: name, stock: attributes['stock'])
     end
 
-    @inventory.reload_stock(change)
+    @change_inventory = Inventory.new
+    @change_inventory.reload_stock(change)
   end
 
   def formatting_price(price)

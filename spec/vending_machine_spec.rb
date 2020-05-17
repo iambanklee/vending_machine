@@ -33,12 +33,6 @@ RSpec.describe VendingMachine do
     }.to_json
   end
 
-  xcontext 'There should be a way of reloading either products or change at a later point' do
-
-  end
-
-  xcontext 'The machine should keep track of the products and change that it contains'
-
   describe '#purchase' do
     subject { vending_machine.purchase(item_name) }
 
@@ -53,6 +47,13 @@ RSpec.describe VendingMachine do
           expect{subject}.to output(/Please collect your Green Tea/).to_stdout
           expect{subject}.not_to output(/Please remember to collect your change/).to_stdout
           is_expected.to eq('Green Tea')
+        end
+
+        it 'deduct the item stock' do
+          expect(Kernel).to receive(:gets).and_return('50p', '20p')
+          expect(vending_machine).to receive(:outstanding_amount).and_return(70, 70, 20, 20, 0, 0)
+
+          expect{subject}.to change { vending_machine.item_inventory.stock_of(item_name) }.from(10).to(9).and output(/Green Tea now has 9 in stock/).to_stdout
         end
       end
 
