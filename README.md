@@ -1,5 +1,7 @@
 # Vending Machine
-This is the implementation for the Vending Machine challenge
+1. This is the implementation for the Vending Machine challenge.
+2. I chose option 2 solving this challenge. Spent around 5 hours in total, most of time in formatting output messages :S
+3. README took similar time to complete...
 
 ## Environment
 - Ruby 2.7.1
