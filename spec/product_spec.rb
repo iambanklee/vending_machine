@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'product'
 
 RSpec.describe Product do

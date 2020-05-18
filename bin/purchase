@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../lib/vending_machine'
 
@@ -14,10 +15,10 @@ items = {
   "Black Tea": {
     price: 59,
     stock: 10
-  },
+  }
 }.to_json
 
-changes =  {
+changes = {
   '1p': 10,
   '2p': 10,
   '5p': 10,
@@ -25,12 +26,12 @@ changes =  {
   '20p': 10,
   '50p': 10,
   '£1': 10,
-  '£2': 10,
+  '£2': 10
 }.to_json
 
 vending_machine = VendingMachine.new(items, changes)
 
-puts "Welcome!"
+puts 'Welcome!'
 
 begin
   puts "This machine provides following product: #{vending_machine.products.keys}"

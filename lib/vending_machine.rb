@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 require_relative 'product'
@@ -14,7 +16,7 @@ class VendingMachine
     '10p' => 10,
     '5p' => 5,
     '2p' => 2,
-    '1p' => 1,
+    '1p' => 1
   }.freeze
 
   def initialize(items, change)
@@ -31,7 +33,7 @@ class VendingMachine
     select_item = select_item(item_name)
 
     puts "You have selected #{select_item.name}, price: #{formatting_price(select_item.price)}"
-    while outstanding_amount > 0
+    while outstanding_amount.positive?
       puts "This machine accepts following coins: #{CHANGE_DENOMINATION_MAP.keys}"
       puts "You need #{formatting_price(outstanding_amount)} to proceed. "
       coin = Kernel.gets.chomp
@@ -55,7 +57,7 @@ class VendingMachine
   end
 
   def return_change
-    if outstanding_amount < 0
+    if outstanding_amount.negative?
       change_detail = amount_to_change(-outstanding_amount)
       change_detail.each { |change| change_inventory.decrease(name: change, stock: 1) }
       puts "Please remember to collect your change: #{change_detail}"
@@ -67,7 +69,8 @@ class VendingMachine
 
     CHANGE_DENOMINATION_MAP.each do |denomination, pence|
       next if pence > amount
-      while amount > 0
+
+      while amount.positive?
         result << denomination
         amount -= pence
         break if pence > amount
@@ -119,6 +122,6 @@ class VendingMachine
   end
 
   def formatting_price(price)
-    "£%.2f" % (price/100.0)
+    format('£%.2f', (price / 100.0))
   end
 end

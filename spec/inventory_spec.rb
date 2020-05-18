@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'inventory'
 
 RSpec.describe Inventory do
@@ -46,7 +48,7 @@ RSpec.describe Inventory do
       {
         'Green Tea': 10,
         'Milk Tea': 20,
-        'Black Tea': 30,
+        'Black Tea': 30
       }.to_json
     end
 
@@ -63,7 +65,7 @@ RSpec.describe Inventory do
         {
           'Green Tea' => 15,
           'Milk Tea' => 20,
-          'Black Tea' => 30,
+          'Black Tea' => 30
         }
       end
 

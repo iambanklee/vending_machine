@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Inventory
   attr_reader :items
 

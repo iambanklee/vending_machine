@@ -1,7 +1,22 @@
 AllCops:
   Exclude:
+    - 'bin/purchase'
     - 'spec/spec_helper.rb'
     - 'Guardfile'
 
 Metrics/BlockLength:
   Max: 30
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+      - 'spec/**/*'
+      - 'test/**/*'
