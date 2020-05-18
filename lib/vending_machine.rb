@@ -15,7 +15,7 @@ class VendingMachine
     '5p' => 5,
     '2p' => 2,
     '1p' => 1,
-  }
+  }.freeze
 
   def initialize(items, change)
     initialize_product(items)
@@ -25,6 +25,8 @@ class VendingMachine
     @selected_item_amount = 0
   end
 
+  # This is the main entry point for this implementation
+  # It contains lot of puts message to interact with users. remove all puts for better readability
   def purchase(item_name)
     select_item = select_item(item_name)
 
@@ -47,6 +49,7 @@ class VendingMachine
     puts "#{select_item.name} now has #{item_inventory.stock_of(select_item.name)} in stock"
 
     return_change
+    reset_amounts
 
     select_item.name
   end
@@ -83,11 +86,17 @@ class VendingMachine
   end
 
   def insert_money(coin)
+    @change_inventory.increase(name: coin, stock: 1)
     @inserted_amount += CHANGE_DENOMINATION_MAP[coin]
   end
 
   def outstanding_amount
     @selected_item_amount - @inserted_amount
+  end
+
+  def reset_amounts
+    @inserted_amount = 0
+    @selected_item_amount = 0
   end
 
   def initialize_product(items)
