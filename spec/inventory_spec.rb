@@ -5,7 +5,7 @@ require 'inventory'
 RSpec.describe Inventory do
   let(:inventory) { described_class.new }
 
-  describe '#add' do
+  describe '#increase' do
     let(:name) { 'Green Tea' }
     let(:stock) { 100 }
 
