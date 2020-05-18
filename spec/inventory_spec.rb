@@ -7,7 +7,7 @@ RSpec.describe Inventory do
     let(:name) { 'Green Tea' }
     let(:stock) { 100 }
 
-    subject { inventory.add(name: name, stock: stock) }
+    subject { inventory.increase(name: name, stock: stock) }
 
     it { is_expected.to eq(100) }
   end
@@ -20,7 +20,7 @@ RSpec.describe Inventory do
 
     context 'when item exist' do
       it 'decrease the stock' do
-        inventory.add(name: name, stock: stock)
+        inventory.increase(name: name, stock: stock)
 
         is_expected.to eq(0)
       end
@@ -34,7 +34,7 @@ RSpec.describe Inventory do
 
     context 'when item exist' do
       it 'return current stock' do
-        inventory.add(name: name, stock: 20)
+        inventory.increase(name: name, stock: 20)
 
         is_expected.to eq(20)
       end
@@ -68,8 +68,8 @@ RSpec.describe Inventory do
       end
 
       it 'return new stock of these reloaded items' do
-        inventory.add(name: 'Green Tea', stock: 5)
-        inventory.add(name: 'Bottle water', stock: 10)
+        inventory.increase(name: 'Green Tea', stock: 5)
+        inventory.increase(name: 'Bottle water', stock: 10)
 
         is_expected.to eq(expected_result)
       end

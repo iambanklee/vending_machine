@@ -111,7 +111,7 @@ class VendingMachine
     @item_inventory = Inventory.new
 
     JSON.parse(items).each do |name, attributes|
-      @item_inventory.add(name: name, stock: attributes['stock'])
+      @item_inventory.increase(name: name, stock: attributes['stock'])
     end
 
     @change_inventory = Inventory.new
