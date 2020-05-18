@@ -12,6 +12,21 @@ RSpec.describe Inventory do
     it { is_expected.to eq(100) }
   end
 
+  describe '#decrease' do
+    let(:name) { 'Green Tea' }
+    let(:stock) { 100 }
+
+    subject { inventory.decrease(name: name, stock: stock) }
+
+    context 'when item exist' do
+      it 'decrease the stock' do
+        inventory.add(name: name, stock: stock)
+
+        is_expected.to eq(0)
+      end
+    end
+  end
+
   describe '#stock' do
     let(:name) { 'Green Tea' }
 

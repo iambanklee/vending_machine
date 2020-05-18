@@ -10,6 +10,11 @@ class Inventory
     items[name] += stock
   end
 
+  def decrease(name:, stock:)
+    items[name] ||= 0
+    items[name] -= stock
+  end
+
   def stock_of(name)
     items[name]
   end
